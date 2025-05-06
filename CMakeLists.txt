@@ -14,4 +14,6 @@ add_executable(untitled1 main.cpp
         src/RequestProcessor.cpp
         src/Algorithms.cpp
         include/Algorithms.h
+        include/Utils.h
+        src/Utils.cpp
 )

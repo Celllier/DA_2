@@ -3,13 +3,14 @@
 #include "RequestProcessor.h"
 #include "Algorithms.h"
 
+#include "Utils.h"
+
 int Algorithms::BF(const Request& request, int curCapacity, bool usedItems[], bool temp[], int& max, int idx, int sum) {
     if (idx >= request.size) {
-        if (sum >= max) {
+        if (sum > max ||
+            sum == max && Utils::amountOfItems(temp, request.size) < Utils::amountOfItems(usedItems, request.size)) {
+            Utils::copyFromTo(temp, usedItems, request.size);
             max = sum;
-            for (int i = 0; i < request.size; i++) {
-                usedItems[i] = temp[i];
-            }
         }
         return sum;
     }
