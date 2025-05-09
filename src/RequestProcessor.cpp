@@ -3,10 +3,22 @@
 //
 
 #include "RequestProcessor.h"
+
+#include <chrono>
+
 #include "Algorithms.h"
 #include <iostream>
 
 void RequestProcessor::processRequest(Request &request) {
+
+    std::string request_name [] = {
+        "Brute Force",
+        "Dynamic Programming",
+        "Greedy",
+        "ILP"   };
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     switch (request.type) {
         case BruteForce: {
             processBF(request);
@@ -25,6 +37,11 @@ void RequestProcessor::processRequest(Request &request) {
             break;
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Time taken for request of type " << request_name[request.type] << ": "
+              << duration.count() << " seconds" << std::endl;
 }
 
 
