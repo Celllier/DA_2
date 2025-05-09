@@ -58,44 +58,62 @@ void Algorithms::DP(const Request &request, bool usedItems[]) {
     int size = request.size;
     int capacity = request.capacity;
 
+
+
     // Allocate dynamic 2D array
-    int** max_value_dp_table = new int*[size+1];
-    for (int i = 0; i <= size; i++) {
-        max_value_dp_table[i] = new int[capacity+1];
-        for (int w = 0; w <= capacity; w++) {
-            max_value_dp_table[i][w] = 0;
+    std::pair<int, int>** max_value_dp_table = new std::pair<int, int>*[size];
+    for (int i = 0; i < size; i++) {
+        max_value_dp_table[i] = new std::pair<int, int>[capacity + 1];
+        for (int j = 0; j <= capacity; ++j) {
+            max_value_dp_table[i][j] = std::make_pair(0, 0);
         }
     }
-    // int max_value_dp_table[size][capacity+1];
+
 
      for (int i = 0; i <= capacity; i++) {
         if ( i >= request.items[0].weight ) {
-            max_value_dp_table[0][i] = request.items[0].value;
+            max_value_dp_table[0][i] = std::make_pair(request.items[0].value, 1);
         }
         else {
-            max_value_dp_table[0][i] = 0;
+            max_value_dp_table[0][i] = std::make_pair(0, 0);
         }
     }
 
-    for (int i = 1; i <= size; i++) {
-        max_value_dp_table[i][0] = 0;
+
+
+    for (int i = 1; i < size; i++) {
+        max_value_dp_table[i][0] = std::make_pair(0,0);
 
     }
 
-    for (int i = 1; i <= size; i++) {
-        int weight = request.items[i-1].weight;
-        int value = request.items[i-1].value;
+
+    for (int i = 1; i < size; i++) {
+        int weight = request.items[i].weight;
+        int value = request.items[i].value;
+        //std::cout << "ITEM WEIGHT: " << weight << "ITEM VALUE" << value << std::endl;
         for (int w = 1; w <= capacity; w++) {
-            if (w < weight) {
-                max_value_dp_table[i][w] = max_value_dp_table[i - 1][w];
-            } else {
-                max_value_dp_table[i][w] = std::max(
-                    max_value_dp_table[i - 1][w],
-                    value + max_value_dp_table[i - 1][w - weight]);
+            std::pair<int, int> without_item = max_value_dp_table[i - 1][w];
+            std::pair<int, int> with_item = std::make_pair(0, 0);
+            if (w >= weight) {
+                with_item = max_value_dp_table[i - 1][w - weight];
+                with_item.first += value;
+                with_item.second += 1;
             }
+
+            if (with_item.first > without_item.first) {
+                max_value_dp_table[i][w] = with_item;
+            } else if (with_item.first < without_item.first) {
+                max_value_dp_table[i][w] = without_item;
+            } else { // Values are equal, choose the one with fewer pallets
+                if (with_item.second < without_item.second) {
+                    max_value_dp_table[i][w] = with_item;
+                } else {
+                    max_value_dp_table[i][w] = without_item;
+                }
+            }
+            //std::cout << "WEIGHT " << w  << " Current value " <<  max_value_dp_table[i][w].first << "previous value" <<  max_value_dp_table[i-1][w].first << std::endl;
         }
     }
-
 
     // reconstrução da solução
 
@@ -105,35 +123,34 @@ void Algorithms::DP(const Request &request, bool usedItems[]) {
 
     // capacidade disponivel
     int remaining = capacity;
-    int idx = 0;
-    if ((size + capacity) % 2 != 0) {
-        idx = -1;
-    }
 
-    for (int i = size-1; i > 0; --i) {
-        if (i == 0) {
-            if (max_value_dp_table[i][remaining] > 0) {
-                usedItems[i] = true;
-            }
-        } else if (max_value_dp_table[i][remaining] != max_value_dp_table[i - 1][remaining]) {
 
-            usedItems[i+idx] = true;
-            remaining -= request.items[i].weight;
+
+    for (int i = size - 1; i >= 1; --i) {
+        if (remaining == 0) {
+            break;
+        }
+        if (max_value_dp_table[i][remaining] != max_value_dp_table[i - 1][remaining]) {
+            usedItems[i] = true;
+            remaining-= request.items[i].weight;
         }
     }
 
-
-
-    // significa que ainda sobra capacidade então usou-se o item 0
-    if (remaining > 0 &&  request.items[0].weight  <= remaining) {
+    // Check if the first item was used
+    if (remaining >= request.items[0].weight && max_value_dp_table[0][remaining].first > 0) {
         usedItems[0] = true;
     }
 
 
 
-    for (int i = 0; i <= size; ++i) {
+
+
+    for (int i = 0; i < size; i++) {
+        //std::cout << "MADE IT TO "  << i << std::endl;
         delete[] max_value_dp_table[i];
     }
+
+
     delete[] max_value_dp_table;
 
 
