@@ -43,10 +43,24 @@ void RequestProcessor::processBF(Request &request) {
     for (auto item : items) {
         std::cout << item.index << " " << item.weight << " " << item.value << std::endl;
     }
+
 }
 
 void RequestProcessor::processDP(Request &request) {
     std::cout << "Processing DP..." << std::endl;
+
+    bool usedItems[request.size] = {false};
+    Algorithms::DP(request, usedItems);
+
+    std::vector<Item> items;
+    for (int i = 0; i < request.size; i++) {
+        if (usedItems[i]) items.push_back(request.items[i]);
+    }
+
+    for (auto item : items) {
+        std::cout << item.index << " " << item.weight << " " << item.value << std::endl;
+    }
+
 
 }
 

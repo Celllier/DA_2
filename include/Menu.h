@@ -6,6 +6,7 @@
 #define MENU_H
 
 #define CLEAR "\033[2J\033[1;1H"
+#include <algorithm>
 #include "InputHandler.h"
 
 

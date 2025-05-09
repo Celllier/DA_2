@@ -2,6 +2,8 @@
 
 #include "RequestProcessor.h"
 #include "Algorithms.h"
+#include <algorithm>
+#include <iostream>
 
 #include "Utils.h"
 
@@ -50,3 +52,91 @@ void Algorithms::Greedy(const Request &request, bool usedItems[]) {
         }
     }
 }
+
+
+void Algorithms::DP(const Request &request, bool usedItems[]) {
+    int size = request.size;
+    int capacity = request.capacity;
+
+    // Allocate dynamic 2D array
+    int** max_value_dp_table = new int*[size+1];
+    for (int i = 0; i <= size; i++) {
+        max_value_dp_table[i] = new int[capacity+1];
+        for (int w = 0; w <= capacity; w++) {
+            max_value_dp_table[i][w] = 0;
+        }
+    }
+    // int max_value_dp_table[size][capacity+1];
+
+     for (int i = 0; i <= capacity; i++) {
+        if ( i >= request.items[0].weight ) {
+            max_value_dp_table[0][i] = request.items[0].value;
+        }
+        else {
+            max_value_dp_table[0][i] = 0;
+        }
+    }
+
+    for (int i = 1; i <= size; i++) {
+        max_value_dp_table[i][0] = 0;
+
+    }
+
+    for (int i = 1; i <= size; i++) {
+        int weight = request.items[i-1].weight;
+        int value = request.items[i-1].value;
+        for (int w = 1; w <= capacity; w++) {
+            if (w < weight) {
+                max_value_dp_table[i][w] = max_value_dp_table[i - 1][w];
+            } else {
+                max_value_dp_table[i][w] = std::max(
+                    max_value_dp_table[i - 1][w],
+                    value + max_value_dp_table[i - 1][w - weight]);
+            }
+        }
+    }
+
+
+    // reconstrução da solução
+
+    for (int i = 0; i < size; i++) {
+        usedItems[i] = false;
+    }
+
+    // capacidade disponivel
+    int remaining = capacity;
+    int idx = 0;
+    if ((size + capacity) % 2 != 0) {
+        idx = -1;
+    }
+
+    for (int i = size-1; i > 0; --i) {
+        if (i == 0) {
+            if (max_value_dp_table[i][remaining] > 0) {
+                usedItems[i] = true;
+            }
+        } else if (max_value_dp_table[i][remaining] != max_value_dp_table[i - 1][remaining]) {
+
+            usedItems[i+idx] = true;
+            remaining -= request.items[i].weight;
+        }
+    }
+
+
+
+    // significa que ainda sobra capacidade então usou-se o item 0
+    if (remaining > 0 &&  request.items[0].weight  <= remaining) {
+        usedItems[0] = true;
+    }
+
+
+
+    for (int i = 0; i <= size; ++i) {
+        delete[] max_value_dp_table[i];
+    }
+    delete[] max_value_dp_table;
+
+
+
+}
+

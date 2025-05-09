@@ -95,7 +95,7 @@ void InputMenu::show() {
         }
 
 
-        for (int i = 0; i < filesPallets.size(); ++i) {
+        for (size_t i = 0; i < filesPallets.size(); ++i) {
             std::cout << "(" << ++options << ") >> " << filesPallets[i].string() << " and " << filesTruck[i].string() << std::endl;
         }
     } catch (const std::filesystem::filesystem_error &e) {

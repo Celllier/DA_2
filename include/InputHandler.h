@@ -6,6 +6,7 @@
 #define INPUTHANDLER_H
 
 #include <iostream>
+#include <algorithm>
 #include <sstream>
 
 #include "RequestProcessor.h"
