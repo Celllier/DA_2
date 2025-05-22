@@ -8,6 +8,9 @@ public:
  static void Greedy(const Request& request, bool usedItems[]);
 
  static void DP(const Request &request, bool usedItems[]);
+
+ static int ILP(const Request &request);
+
 };
 
 #endif // ALGORITHMS_H

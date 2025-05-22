@@ -74,6 +74,7 @@ Request InputHandler::parseTruckAndPallets(const std::string& filepath, bool &co
 
     request.capacity = capacity;
     request.size = size;
+    request.truck_path = filepath;
 
     return request;
 }
@@ -100,4 +101,33 @@ void InputHandler::parsePallets(const std::string& filepath, Request &request, b
         request.items.push_back(item);
     }
 
+    request.pallets_path = filepath;
+
+
+
+}
+
+void InputHandler::parseILPResults(Request &request) {
+    std::string filepath = "../results/output.txt";
+    std::ifstream file(filepath);
+    std::string line;
+
+    if (!file) {
+        std::cerr << "Error: Could not open file " << filepath << "\n";
+        return;
+    }
+
+    getline(file, line);  //remove header
+
+
+
+    while(getline(file, line)) {
+        std::istringstream ss(line);
+        char token;
+        int index, weight, value;
+        ss >> index >> weight  >> value;
+
+        std::cout << index << " " <<  weight << " " << value << std::endl;
+
+    }
 }

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 
+#include "InputHandler.h"
 #include "Utils.h"
 
 int Algorithms::BF(const Request& request, int curCapacity, bool usedItems[], bool temp[], int& max, int idx, int sum) {
@@ -155,5 +156,14 @@ void Algorithms::DP(const Request &request, bool usedItems[]) {
 
 
 
+}
+
+int Algorithms::ILP(const Request &request) {
+    int ret = system(("python ..\\src\\ILPSolver.py " + request.truck_path + " " + request.pallets_path+ " ..\\results\\output.txt >nul 2>&1").c_str());// last part sends the printstack to null
+
+    if (ret != 0) {
+        std::cerr << "Failed to run ILPSolver.py" << std::endl;
+    }
+    return ret;
 }
 

@@ -55,8 +55,6 @@ Menu *MainMenu::getNextMenu() {
 
 
 
-
-
 void InputMenu::show() {
     std::cout << CLEAR;
     int options = 0;

@@ -90,6 +90,8 @@ public:
 
     static void parsePallets(const std::string& filepath, Request &request, bool &correct);
 
+    static void parseILPResults(Request &request);
+
 
 
 

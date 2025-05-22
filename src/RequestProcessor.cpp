@@ -9,6 +9,8 @@
 #include "Algorithms.h"
 #include <iostream>
 
+#include "InputHandler.h"
+
 void RequestProcessor::processRequest(Request &request) {
 
     std::string request_name [] = {
@@ -98,5 +100,12 @@ void RequestProcessor::processGreedy(Request &request) {
 
 void RequestProcessor::processILP(Request &request) {
     std::cout << "Processing ILP..." << std::endl;
+    int res = Algorithms::ILP(request);
+
+    if(!res) {
+        InputHandler::parseILPResults(request);
+    }
+
+
 
 }

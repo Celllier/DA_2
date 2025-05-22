@@ -5,6 +5,7 @@
 #ifndef REQUESTPROCESSOR_H
 #define REQUESTPROCESSOR_H
 #include <vector>
+#include <string>
 
 enum RequestType {
     BruteForce,
@@ -25,6 +26,8 @@ typedef struct {
     int size = 0;
     std::vector<Item> items;
     RequestType type = BruteForce;
+    std::string pallets_path;
+    std::string truck_path;
 } Request;
 
 
