@@ -21,7 +21,7 @@ int main() {
         else {
             delete menu.top();
             menu.pop();
-            if (menu.size()==1) break;
+            //if (menu.size()==1) break;
         }
     }
 

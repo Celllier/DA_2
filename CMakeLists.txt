@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.30)
-project(untitled1)
+project(DA_2)
 
 set(CMAKE_CXX_STANDARD 20)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-add_executable(untitled1 main.cpp
+add_executable(DA_2 main.cpp
         include/Menu.h
         include/InputHandler.h
         src/InputHandler.cpp

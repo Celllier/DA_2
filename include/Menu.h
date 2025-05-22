@@ -15,7 +15,6 @@
 */
 class Menu {
 protected:
-    // RouteNetwork& route_network_; ///< Reference to the route network being managed.
 
     /**
     * @brief Displays an error message for invalid input and returns the current menu.
