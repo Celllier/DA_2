@@ -2,10 +2,13 @@ from pulp import LpProblem, LpMaximize, LpVariable, lpSum
 import sys
 import csv
 
-
+## @file ILPSolver.py
+#  @brief Solver for ILP.
+#  Reads two input files, one with the truck capacity and the quantity of pallets,
+#  and other with the pallets data (weight and profit). Solves the knapsack problem and then
+#  rights the select pallets to an output.txt file
 
 # Read input from file
-
 with open(sys.argv[1], 'r') as f:
     reader = csv.reader(f)
     next(reader)  # skip header
