@@ -1,8 +1,3 @@
-//
-// Created by micael on 02-05-2025.
-//
-
-
 #include "Menu.h"
 #include <filesystem>
 #include <vector>

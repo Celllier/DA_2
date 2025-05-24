@@ -1,7 +1,3 @@
-//
-// Created by micael on 02-05-2025.
-//
-
 #include "RequestProcessor.h"
 
 #include <chrono>
@@ -59,9 +55,17 @@ void RequestProcessor::processBF(Request &request) {
         if (usedItems[i]) items.push_back(request.items[i]);
     }
 
+    int totalProfit = 0;
+    int totalWeight = 0;
+
     for (auto item : items) {
         std::cout << item.index << " " << item.weight << " " << item.value << std::endl;
+        totalProfit += item.value;
+        totalWeight += item.weight;
     }
+
+    std::cout << "Max Profit: " << totalProfit << std::endl;
+    std::cout  << "Max Weight: " << totalWeight << std::endl;
 
 }
 
@@ -76,10 +80,17 @@ void RequestProcessor::processDP(Request &request) {
         if (usedItems[i]) items.push_back(request.items[i]);
     }
 
+    int totalProfit = 0;
+    int totalWeight = 0;
+
     for (auto item : items) {
         std::cout << item.index << " " << item.weight << " " << item.value << std::endl;
+        totalProfit += item.value;
+        totalWeight += item.weight;
     }
 
+    std::cout << "Max Profit: " << totalProfit << std::endl;
+    std::cout  << "Max Weight: " << totalWeight << std::endl;
 
 }
 
@@ -93,9 +104,17 @@ void RequestProcessor::processGreedy(Request &request) {
         if (usedItems[i]) items.push_back(request.items[i]);
     }
 
+    int totalProfit = 0;
+    int totalWeight = 0;
+
     for (auto item : items) {
         std::cout << item.index << " " << item.weight << " " << item.value << std::endl;
+        totalProfit += item.value;
+        totalWeight += item.weight;
     }
+
+    std::cout << "Max Profit: " << totalProfit << std::endl;
+    std::cout  << "Max Weight: " << totalWeight << std::endl;
 }
 
 void RequestProcessor::processILP(Request &request) {
@@ -105,7 +124,5 @@ void RequestProcessor::processILP(Request &request) {
     if(!res) {
         InputHandler::parseILPResults(request);
     }
-
-
 
 }

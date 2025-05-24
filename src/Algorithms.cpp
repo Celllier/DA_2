@@ -1,10 +1,7 @@
-
-
 #include "RequestProcessor.h"
 #include "Algorithms.h"
 #include <algorithm>
 #include <iostream>
-
 #include "InputHandler.h"
 #include "Utils.h"
 
@@ -164,7 +161,7 @@ int Algorithms::ILP(const Request &request) {
 #else
     std::string command = "python3";
 #endif
-    int ret = system((command + " ../src/ILPSolver.py " + request.truck_path + " " + request.pallets_path+ " ../results/output.txt >nul 2>&1").c_str());//  >nul 2>&1 last part sends the printstack to null >nul 2>&1
+    int ret = system((command + " ../src/ILPSolver.py " + request.truck_path + " " + request.pallets_path+ " ../results/output.txt >nul 2>&1").c_str());// >nul 2>&1 last part sends the printstack to null >nul 2>&1
 
     if (ret != 0) {
         std::cerr << "Failed to run ILPSolver.py" << std::endl;

@@ -1,7 +1,3 @@
-//
-// Created by micael on 06-05-2025.
-//
-
 #include "Utils.h"
 
 int Utils::amountOfItems(const bool usedItems[], int size) {

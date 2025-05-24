@@ -1,14 +1,27 @@
+"""
+ILPSolver.py
+------------
+
+Solves the generic 0/1 Knapsack problem using Integer Linear Programming (ILP) via the PuLP library
+with the default CBC solver.
+
+Input:
+    - Truck file (CSV): Contains a single row with the truck's capacity and number of pallets.
+    - Pallet file (CSV): Contains pallet information (index, weight, profit).
+    - Output file: File to write the selected pallet indices, weights, and profits.
+
+Usage:
+    python3 ILPSolver <truck_file> <pallet_file> <output_file> or python ILPSolver <truck_file> <pallet_file> <output_file>
+
+Example:
+    python3 ILPSolver.py truck.csv pallets.csv output.txt or python ILPSolver.py truck.csv pallets.csv output.txt
+"""
+
 from pulp import LpProblem, LpMaximize, LpVariable, lpSum
 import sys
 import csv
 
-## @file ILPSolver.py
-#  @brief Solver for ILP.
-#  Reads two input files, one with the truck capacity and the quantity of pallets,
-#  and other with the pallets data (weight and profit). Solves the knapsack problem and then
-#  rights the select pallets to an output.txt file
-
-# Read input from file
+# --- Read pallet data ---
 with open(sys.argv[1], 'r') as f:
     reader = csv.reader(f)
     next(reader)  # skip header
@@ -26,21 +39,27 @@ with open(sys.argv[2], 'r') as f:
             weights.append(int(row['Weight']))
             profits.append(int(row['Profit']))
 
-# Setup LP problem
+# --- Setup ILP problem using PuLP ---
 model = LpProblem("Knapsack", LpMaximize)
+
+# Binary decision variables: x[i] = 1 if item i is selected
 x = [LpVariable(f"x{i}", cat="Binary") for i in range(n)]
 
+# Objective: Maximize total profit
 model += lpSum(x[i] * profits[i] for i in range(n))
+
+# Constraint: Total weight must not exceed truck capacity
 model += lpSum(x[i] * weights[i] for i in range(n)) <= capacity
 
-# Solve
+# --- Solve the model using CBC ---
 model.solve()
 
+# --- Extract results ---
 selected_indices = [i for i in range(n) if x[i].varValue > 0.5]
 total_profit = sum(profits[i] for i in selected_indices)
 total_weight = sum(weights[i] for i in selected_indices)
 
-# Write result to output file -- with a system call ---- open(sys.argv[2], 'r') as f
+# --- Write selected pallets to output file ---
 with open(sys.argv[3], 'w') as out:
     out.write("index weight value\n")
     for i in selected_indices:

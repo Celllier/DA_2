@@ -1,9 +1,4 @@
-//
-// Created by micael on 02-05-2025.
-//
-
 #include "InputHandler.h"
-
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -111,6 +106,8 @@ void InputHandler::parseILPResults(Request &request) {
     std::string filepath = "../results/output.txt";
     std::ifstream file(filepath);
     std::string line;
+    int totalProfit = 0;
+    int totalWeight = 0;
 
     if (!file) {
         std::cerr << "Error: Could not open file " << filepath << "\n";
@@ -123,11 +120,15 @@ void InputHandler::parseILPResults(Request &request) {
 
     while(getline(file, line)) {
         std::istringstream ss(line);
-        char token;
         int index, weight, value;
         ss >> index >> weight  >> value;
+        totalProfit += value;
+        totalWeight += weight;
 
         std::cout << index << " " <<  weight << " " << value << std::endl;
 
     }
+
+    std::cout << "Max Profit: " << totalProfit << std::endl;
+    std::cout  << "Max Weight: " << totalWeight << std::endl;
 }
