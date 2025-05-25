@@ -62,3 +62,7 @@ sftp-config.json
 # Exclude user-specific editor/IDE files
 *.swp
 *~
+
+
+# Exclude output txt from resuls
+/results/*.txt
