@@ -65,4 +65,4 @@ sftp-config.json
 
 
 # Exclude output txt from resuls
-/results/*.txt
+results/output.txt
